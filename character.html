@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karakter Game - THE TWIN GAMEDEV</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f43f5e;
+            --accent: #8b5cf6;
+            --success: #10b981;
+            --warning: #f97316;
+            --info: #06b6d4;
+            --dark: #1e293b;
+            --dark-light: #334155;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --card-bg: #ffffff;
+            --card-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo i {
+            font-size: 2.8rem;
+            color: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .logo h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: var(--dark);
+            padding: 0.8rem 1.8rem;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: var(--transition);
+            background: rgba(99, 102, 241, 0.1);
+            border: 2px solid transparent;
+        }
+
+        nav a:hover {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        nav a.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+            margin-bottom: 2rem;
+        }
+
+        .btn-back:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: var(--light);
+            opacity: 0.9;
+        }
+
+        .page-header::after {
+            content: '';
+            display: block;
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        /* Tabs */
+        .tabs-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: rgba(99, 102, 241, 0.1);
+            border: 2px solid transparent;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            color: var(--dark);
+        }
+
+        .tab-btn:hover {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Character Grid */
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .character-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .character-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .character-image-container {
+            position: relative;
+            height: 300px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .character-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .character-card:hover .character-image {
+            transform: scale(1.1);
+        }
+
+        .character-frame {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            pointer-events: none;
+        }
+
+        .character-rarity {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #000;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .character-game-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .character-details {
+            padding: 1.5rem;
+        }
+
+        .character-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .character-element {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .element-pyro { background: linear-gradient(135deg, #f97316, #ef4444); color: white; }
+        .element-hydro { background: linear-gradient(135deg, #06b6d4, #3b82f6); color: white; }
+        .element-electro { background: linear-gradient(135deg, #8b5cf6, #a855f7); color: white; }
+        .element-dendro { background: linear-gradient(135deg, #10b981, #22c55e); color: white; }
+        .element-cryo { background: linear-gradient(135deg, #93c5fd, #bfdbfe); color: var(--dark); }
+        .element-anemo { background: linear-gradient(135deg, #22d3ee, #67e8f9); color: var(--dark); }
+        .element-geo { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: var(--dark); }
+        .element-quantum { background: linear-gradient(135deg, #a855f7, #d946ef); color: white; }
+        .element-imaginary { background: linear-gradient(135deg, #f97316, #f59e0b); color: white; }
+
+        .character-description {
+            color: var(--gray);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .character-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .stat-icon {
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            color: var(--dark);
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 5rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .social-links a {
+            color: var(--primary);
+            font-size: 1.5rem;
+            transition: var(--transition);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .social-links a:hover {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .character-grid {
+                grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 1rem;
+            }
+            
+            .logo h1 {
+                font-size: 1.8rem;
+            }
+            
+            nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav a {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+            
+            .character-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 1rem;
+            }
+            
+            .page-title {
+                font-size: 1.8rem;
+            }
+            
+            .character-image-container {
+                height: 250px;
+            }
+            
+            .character-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-users"></i>
+                <h1>KARAKTER GAME</h1>
+            </div>
+            <nav>
+                <a href="index.html">Beranda</a>
+                <a href="rekomendasi.html">Rekomendasi</a>
+                <a href="character.html" class="active">Character</a>
+                <a href="build.html">Build</a>
+                <a href="gameplay.html">Gameplay</a>
+                <a href="about.html">About</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="index.html" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Kembali ke Beranda
+        </a>
+
+        <div class="page-header">
+            <h1 class="page-title">Koleksi Karakter</h1>
+            <p class="page-subtitle">Temukan karakter-karakter terbaik dari berbagai game</p>
+        </div>
+
+        <div class="tabs-container">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab('genshin')">
+                    <i class="fas fa-globe"></i> Genshin Impact
+                </button>
+                <button class="tab-btn" onclick="openTab('honkai')">
+                    <i class="fas fa-rocket"></i> Honkai Impact
+                </button>
+                <button class="tab-btn" onclick="openTab('starrail')">
+                    <i class="fas fa-train"></i> Star Rail
+                </button>
+            </div>
+
+            <!-- Genshin Impact Characters -->
+            <div id="genshin" class="tab-content active">
+                <div class="character-grid">
+                    <div class="character-card">
+                        <div class="character-image-container">
+                            <img src="https://www.cyberpowerpc.com/blog/w/wp-content/uploads/2021/09/genshin-impact-raiden-shogun.jpg" 
+                                 alt="Raiden Shogun" class="character-image">
+                            <div class="character-frame"></div>
+                            <span class="character-rarity">⭐ 5-Star</span>
+                            <span class="character-game-badge">Genshin Impact</span>
+                        </div>
+                        <div class="character-details">
+                            <h3 class="character-name">
+                                Raiden Shogun
+                                <i class="fas fa-bolt"></i>
+                            </h3>
+                            <span class="character-element element-electro">Electro</span>
+                            <p class="character-description">
+                                Electro Archon dari Inazuma dengan damage tinggi dan kemampuan support energi.
+                                Sangat kuat dalam team composition yang membutuhkan burst damage.
+                            </p>
+                            <div class="character-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-fist-raised stat-icon"></i>
+                                    <span class="stat-value">ATK: 3,572</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-shield-alt stat-icon"></i>
+                                    <span class="stat-value">DEF: 789</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-heart stat-icon"></i>
+                                    <span class="stat-value">HP: 12,907</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-bolt stat-icon"></i>
+                                    <span class="stat-value">Energy Recharge: 272%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="character-card">
+                        <div class="character-image-container">
+                            <img src="https://upload-static.hoyoverse.com/hoyolab-wiki/2023/09/16/35428890/55e2e01841797ea02b449a87a46ae62c_5248678944573038180.png?x-oss-process=image%2Fformat%2Cwebp" 
+                                 alt="Hu Tao" class="character-image">
+                            <div class="character-frame"></div>
+                            <span class="character-rarity">⭐ 5-Star</span>
+                            <span class="character-game-badge">Genshin Impact</span>
+                        </div>
+                        <div class="character-details">
+                            <h3 class="character-name">
+                                Hu Tao
+                                <i class="fas fa-ghost"></i>
+                            </h3>
+                            <span class="character-element element-pyro">Pyro</span>
+                            <p class="character-description">
+                                Direktur Rumah Duka Wangsheng dengan gameplay high-risk high-reward.
+                                Damage maksimal saat HP rendah dengan mekanik charge attack yang unik.
+                            </p>
+                            <div class="character-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-fist-raised stat-icon"></i>
+                                    <span class="stat-value">ATK: 3,215</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-shield-alt stat-icon"></i>
+                                    <span class="stat-value">DEF: 876</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-heart stat-icon"></i>
+                                    <span class="stat-value">HP: 15,552</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-fire stat-icon"></i>
+                                    <span class="stat-value">Pyro DMG: 46.6%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="character-card">
+                        <div class="character-image-container">
+                            <img src="https://row.haluan.co/wp-content/uploads/2024/01/Nahida-Genshin.jpg" 
+                                 alt="Nahida" class="character-image">
+                            <div class="character-frame"></div>
+                            <span class="character-rarity">⭐ 5-Star</span>
+                            <span class="character-game-badge">Genshin Impact</span>
+                        </div>
+                        <div class="character-details">
+                            <h3 class="character-name">
+                                Nahida
+                                <i class="fas fa-seedling"></i>
+                            </h3>
+                            <span class="character-element element-dendro">Dendro</span>
+                            <p class="character-description">
+                                Dendro Archon dengan kemampuan support luar biasa.
+                                Sangat kuat dalam reaksi Dendro dan dapat membaca pikiran orang.
+                            </p>
+                            <div class="character-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-fist-raised stat-icon"></i>
+                                    <span class="stat-value">ATK: 2,987</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-shield-alt stat-icon"></i>
+                                    <span class="stat-value">DEF: 723</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-heart stat-icon"></i>
+                                    <span class="stat-value">HP: 10,345</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-magic stat-icon"></i>
+                                    <span class="stat-value">Elemental Mastery: 985</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Honkai Impact Characters -->
+            <div id="honkai" class="tab-content">
+                <div class="character-grid">
+                    <div class="character-card">
+                        <div class="character-image-container">
+                            <img src="https://upload-os-bbs.hoyolab.com/upload/2022/09/11/149514961/f90aff5620395aa7d52cba5caa8ef935_207193309231291766.jpg" 
+                                 alt="Herrscher of Humanity" class="character-image">
+                            <div class="character-frame"></div>
+                            <span class="character-rarity">⭐ 5-Star</span>
+                            <span class="character-game-badge">Honkai Impact</span>
+                        </div>
+                        <div class="character-details">
+                            <h3 class="character-name">
+                                Herrscher of Humanity
+                                <i class="fas fa-brain"></i>
+                            </h3>
+                            <span class="character-element element-imaginary">Ice</span>
+                            <p class="character-description">
+                                Ice DPS dengan berbagai mode pertarungan dan kemampuan crowd control.
+                                Sangat versatile dalam berbagai situasi pertempuran.
+                            </p>
+                            <div class="character-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-fist-raised stat-icon"></i>
+                                    <span class="stat-value">ATK: 4,215</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-shield-alt stat-icon"></i>
+                                    <span class="stat-value">DEF: 1,234</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-heart stat-icon"></i>
+                                    <span class="stat-value">HP: 14,567</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-crosshairs stat-icon"></i>
+                                    <span class="stat-value">CRIT Rate: 35%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Honkai Star Rail Characters -->
+            <div id="starrail" class="tab-content">
+                <div class="character-grid">
+                    <div class="character-card">
+                        <div class="character-image-container">
+                            <img src="https://row.haluan.co/wp-content/uploads/2024/03/maxresdefault-5.jpg" 
+                                 alt="Kafka" class="character-image">
+                            <div class="character-frame"></div>
+                            <span class="character-rarity">⭐ 5-Star</span>
+                            <span class="character-game-badge">Star Rail</span>
+                        </div>
+                        <div class="character-details">
+                            <h3 class="character-name">
+                                Kafka
+                                <i class="fas fa-bolt"></i>
+                            </h3>
+                            <span class="character-element element-electro">Lightning</span>
+                            <p class="character-description">
+                                Lightning DPS yang mengandalkan DoT (Damage over Time).
+                                Sangat kuat dalam team composition yang fokus pada efek status.
+                            </p>
+                            <div class="character-stats">
+                                <div class="stat-item">
+                                    <i class="fas fa-fist-raised stat-icon"></i>
+                                    <span class="stat-value">ATK: 3,876</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-shield-alt stat-icon"></i>
+                                    <span class="stat-value">DEF: 987</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-heart stat-icon"></i>
+                                    <span class="stat-value">HP: 11,234</span>
+                                </div>
+                                <div class="stat-item">
+                                    <i class="fas fa-tachometer-alt stat-icon"></i>
+                                    <span class="stat-value">Speed: 134</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="header-container">
+            <p>&copy; 2025 THE TWIN GAMEDEV. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-discord"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tab functionality
+        function openTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show the selected tab content
+            document.getElementById(tabId).classList.add('active');
+            
+            // Add active class to the clicked tab button
+            event.currentTarget.classList.add('active');
+            
+            // Smooth scroll to top of tab content
+            document.querySelector('.tabs-container').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // Back to top button behavior
+        window.addEventListener('scroll', function() {
+            const btn = document.querySelector('.btn-back');
+            if (window.scrollY > 300) {
+                btn.style.position = 'fixed';
+                btn.style.bottom = '20px';
+                btn.style.right = '20px';
+                btn.style.zIndex = '1000';
+            } else {
+                btn.style.position = 'relative';
+                btn.style.bottom = 'auto';
+                btn.style.right = 'auto';
+            }
+        });
+
+        // Current year for footer
+        document.querySelector('footer p').innerHTML = `&copy; ${new Date().getFullYear()} THE TWIN GAMEDEV. All rights reserved.`;
+
+        // Character card hover effects
+        document.querySelectorAll('.character-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate character cards on load
+            const cards = document.querySelectorAll('.character-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.style.animation = 'fadeInUp 0.6s ease forwards';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gameplay - THE TWIN GAMEDEV</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f43f5e;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .btn-back {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            margin: 1rem 0 2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        nav a {
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        nav a:hover, nav a.active {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem 3rem;
+        }
+
+        .page-title {
+            text-align: center;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .page-title:after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            margin: 0.5rem auto;
+            border-radius: 2px;
+        }
+
+        /* Video Player Styles */
+        .video-section {
+            margin-bottom: 3rem;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .video-player {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .video-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-container:hover .video-controls {
+            opacity: 1;
+        }
+
+        .play-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .play-btn:hover {
+            background: #e11d48;
+            transform: scale(1.1);
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: var(--secondary);
+            width: 0%;
+            transition: width 0.1s ease;
+        }
+
+        .time-display {
+            color: white;
+            font-size: 0.9rem;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .volume-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .volume-slider {
+            width: 80px;
+            height: 6px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .volume-level {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: var(--primary);
+            width: 70%;
+            border-radius: 3px;
+        }
+
+        .fullscreen-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        /* Video Gallery */
+        .video-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .video-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .video-thumbnail {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .video-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .video-card:hover .video-thumbnail img {
+            transform: scale(1.1);
+        }
+
+        .play-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.7);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-card:hover .play-overlay {
+            opacity: 1;
+        }
+
+        .video-info {
+            padding: 1.5rem;
+        }
+
+        .video-title {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            width: 90%;
+            max-width: 800px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--gray-light);
+            transform: translateY(-5px);
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav a {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .video-controls {
+                opacity: 1;
+                padding: 0.5rem;
+            }
+            
+            .volume-slider {
+                width: 60px;
+            }
+            
+            .time-display {
+                min-width: 60px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-play-circle"></i>
+                <h1>GAMEPLAY</h1>
+            </div>
+            <nav>
+                <a href="index.html">Beranda</a>
+                <a href="rekomendasi.html">Rekomendasi</a>
+                <a href="character.html">Character</a>
+                <a href="build.html">Build</a>
+                <a href="gameplay.html" class="active">Gameplay</a>
+                <a href="about.html">About</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="index.html" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Kembali ke Beranda
+        </a>
+
+        <div class="page-title">
+            <h2>Gameplay & Tutorial</h2>
+            <p>Tonton gameplay terbaik dan pelajari strategi dari para expert</p>
+        </div>
+
+        <!-- Featured Video -->
+        <section class="video-section">
+            <h3>Honkai Nexus Anima trailer</h3>
+            <div class="video-grid">
+                <div class="video-card" onclick="openVideo('video1')">
+                    <div class="video-thumbnail">
+                        <img src="https://img.game8.co/4164685/8d568bc50b8e39f07efd160a002f174d.png/show" alt="Genshin Impact Combat">
+                        <div class="play-overlay">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/AwFlRZFGkcI?si=CdXZybTNJbU2GcdV" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <button class="play-btn" onclick="togglePlay()">
+                        <i class="fas fa-play"></i>
+                    </button>
+                    <div class="progress-bar" onclick="seekVideo(event)">
+                        <div class="progress"></div>
+                    </div>
+                    <div class="time-display">00:00 / 00:00</div>
+                    <div class="volume-control">
+                        <button class="volume-btn" onclick="toggleMute()">
+                            <i class="fas fa-volume-up"></i>
+                        </button>
+                        <div class="volume-slider" onclick="changeVolume(event)">
+                            <div class="volume-level"></div>
+                        </div>
+                    </div>
+                    <button class="fullscreen-btn" onclick="toggleFullscreen()">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Gallery -->
+        <section class="video-gallery">
+            <h3>Video Lainnya</h3>
+            <div class="video-grid">
+                <div class="video-card" onclick="openVideo('video1')">
+                    <div class="video-thumbnail">
+                        <img src="https://fastcdn.hoyoverse.com/content-v2/plat/124031/5d2ba4371115d26de4c574b28311aed8_3702783840928167787.jpeg" alt="Genshin Impact Combat">
+                        <div class="play-overlay">
+                            <iframe src="https://www.youtube.com/embed/TAlKhARUcoY" 
+                            title="Genshin Impact Gameplay" 
+                            allowfullscreen>
+                    </iframe>
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h4 class="video-title">Genshin Impact - Trailer</h4>
+                        <div class="video-meta">
+                            <span>15:30</span>
+                            <span>2.5K views</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-card" onclick="openVideo('video1')">
+                    <div class="video-thumbnail">
+                        <img src="https://i.ytimg.com/vi/YzMbmsKXAHU/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLCKgPYScb2__DuF2SY40s3EqT5jGA" alt="Genshin Impact Combat">
+                        <div class="play-overlay">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/rYEtuQD6haw?si=SduZXLPHhaj2j5jJ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h4 class="video-title">Honkai Star Rail - Memory of Chaos</h4>
+                        <div class="video-meta">
+                            <span>12:45</span>
+                            <span>1.8K views</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-card" onclick="openVideo('video1')">
+                    <div class="video-thumbnail">
+                        <img src="https://i.ytimg.com/vi/wsMxcMH0d5c/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDn0dE0DWAvitJ6P7kepHUoJAyWTg" alt="Genshin Impact Combat">
+                        <div class="play-overlay">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/wg9RiJv1fNY?si=FlLO4kuc83nilwZO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h4 class="video-title">Honkai Star Rail X Fate</h4>
+                        <div class="video-meta">
+                            <span>18:20</span>
+                            <span>3.2K views</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-card" onclick="openVideo('video1')">
+                    <div class="video-thumbnail">
+                        <img src="https://i.ytimg.com/vi/0cPbl6lxlEU/maxresdefault.jpg" alt="Genshin Impact Combat">
+                        <div class="play-overlay">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/0cPbl6lxlEU?si=5COYlz_DtvjGl4O0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h4 class="video-title">Zenless Zone Zero Trailer</h4>
+                        <div class="video-meta">
+                            <span>22:10</span>
+                            <span>4.1K views</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-card" onclick="openVideo('video1')">
+                    <div class="video-thumbnail">
+                        <img src="https://i.ytimg.com/vi/fx2BFITbJ-U/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLCvoDKARYkin0GaCD15WWBqFtj8GA" alt="Genshin Impact Combat">
+                        <div class="play-overlay">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/z8J3A3Q7RoI?si=XW2ebxJ_Xu-A_8TV" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h4 class="video-title">Spiral Abyss Floor 12 - 36 Stars</h4>
+                        <div class="video-meta">
+                            <span>14:35</span>
+                            <span>5.7K views</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="video-card" onclick="openVideo('video1')">
+                    <div class="video-thumbnail">
+                        <img src="https://gamerbraves.sgp1.cdn.digitaloceanspaces.com/2023/02/Honkai.jpg" alt="Genshin Impact Combat">
+                        <div class="play-overlay">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/oTIZ7i8TG64?si=Q76qn_Ni9FS4Xj8B" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            <i class="fas fa-play"></i>
+                        </div>
+                    </div>
+                    <div class="video-info">
+                        <h4 class="video-title">Herrsscher Of Finalty Trailer</h4>
+                        <div class="video-meta">
+                            <span>25:40</span>
+                            <span>8.3K views</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Video Modal -->
+    <div class="modal" id="videoModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="video-container">
+                <video class="video-player" id="modalVideo" controls>
+                    <source src="#" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="header-container">
+            <p>&copy; 2025 EMBEK ENDUT GAMEDEV. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-discord"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Video Player Variables
+        const videoPlayer = document.querySelector('.video-player');
+        const playBtn = document.querySelector('.play-btn');
+        const progressBar = document.querySelector('.progress');
+        const timeDisplay = document.querySelector('.time-display');
+        const volumeBtn = document.querySelector('.volume-btn');
+        const volumeLevel = document.querySelector('.volume-level');
+        const modal = document.getElementById('videoModal');
+        const modalVideo = document.getElementById('modalVideo');
+
+        // Sample video data (in real implementation, these would be actual video URLs)
+        const videoData = {
+            'video1': 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
+            'video2': 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4',
+            'video3': 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
+            'video4': 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4',
+            'video5': 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
+            'video6': 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4'
+        };
+
+        // Initialize video player
+        function initVideoPlayer() {
+            // Set initial volume
+            videoPlayer.volume = 0.7;
+            updateVolumeDisplay();
+            
+            // Add event listeners
+            videoPlayer.addEventListener('timeupdate', updateProgress);
+            videoPlayer.addEventListener('loadedmetadata', function() {
+                timeDisplay.textContent = formatTime(0) + ' / ' + formatTime(videoPlayer.duration);
+            });
+            
+            // Set a sample video source (in real implementation, use actual video URL)
+            // videoPlayer.src = 'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4';
+        }
+
+        // Toggle play/pause
+        function togglePlay() {
+            if (videoPlayer.paused) {
+                videoPlayer.play();
+                playBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            } else {
+                videoPlayer.pause();
+                playBtn.innerHTML = '<i class="fas fa-play"></i>';
+            }
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const progress = (videoPlayer.currentTime / videoPlayer.duration) * 100;
+            progressBar.style.width = progress + '%';
+            timeDisplay.textContent = formatTime(videoPlayer.currentTime) + ' / ' + formatTime(videoPlayer.duration);
+        }
+
+        // Seek video
+        function seekVideo(event) {
+            const progressBar = event.currentTarget;
+            const rect = progressBar.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const clickedValue = x / progressBar.offsetWidth;
+            videoPlayer.currentTime = clickedValue * videoPlayer.duration;
+        }
+
+        // Toggle mute
+        function toggleMute() {
+            videoPlayer.muted = !videoPlayer.muted;
+            volumeBtn.innerHTML = videoPlayer.muted ? 
+                '<i class="fas fa-volume-mute"></i>' : 
+                '<i class="fas fa-volume-up"></i>';
+            updateVolumeDisplay();
+        }
+
+        // Change volume
+        function changeVolume(event) {
+            const volumeSlider = event.currentTarget;
+            const rect = volumeSlider.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            let volume = x / volumeSlider.offsetWidth;
+            
+            // Ensure volume is between 0 and 1
+            volume = Math.max(0, Math.min(1, volume));
+            
+            videoPlayer.volume = volume;
+            videoPlayer.muted = (volume === 0);
+            updateVolumeDisplay();
+        }
+
+        // Update volume display
+        function updateVolumeDisplay() {
+            const volume = videoPlayer.muted ? 0 : videoPlayer.volume;
+            volumeLevel.style.width = (volume * 100) + '%';
+            volumeBtn.innerHTML = volume === 0 ? 
+                '<i class="fas fa-volume-mute"></i>' : 
+                volume < 0.5 ? 
+                '<i class="fas fa-volume-down"></i>' : 
+                '<i class="fas fa-volume-up"></i>';
+        }
+
+        // Toggle fullscreen
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                videoPlayer.parentElement.requestFullscreen().catch(err => {
+                    console.log('Error attempting to enable fullscreen:', err);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Format time (seconds to MM:SS)
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return minutes.toString().padStart(2, '0') + ':' + secs.toString().padStart(2, '0');
+        }
+
+        // Open video in modal
+        function openVideo(videoId) {
+            // In real implementation, set the actual video source
+            // modalVideo.src = videoData[videoId];
+            modal.style.display = 'flex';
+            modalVideo.play();
+        }
+
+        // Close modal
+        function closeModal() {
+            modal.style.display = 'none';
+            modalVideo.pause();
+        }
+
+        // Close modal when clicking outside
+        modal.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Back to top button behavior
+        window.addEventListener('scroll', function() {
+            const btn = document.querySelector('.btn-back');
+            if (window.scrollY > 300) {
+                btn.style.position = 'fixed';
+                btn.style.bottom = '20px';
+                btn.style.right = '20px';
+                btn.style.zIndex = '99';
+            } else {
+                btn.style.position = 'relative';
+                btn.style.bottom = 'auto';
+                btn.style.right = 'auto';
+            }
+        });
+
+        // Current year for footer
+        document.querySelector('footer p').innerHTML = `&copy; ${new Date().getFullYear()} EMBEK ENDUT GAMEDEV. All rights reserved.`;
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initVideoPlayer();
+            
+            // Add keyboard controls
+            document.addEventListener('keydown', function(event) {
+                if (event.code === 'Space') {
+                    event.preventDefault();
+                    togglePlay();
+                }
+                
+                if (event.code === 'ArrowRight') {
+                    videoPlayer.currentTime += 5;
+                }
+                
+                if (event.code === 'ArrowLeft') {
+                    videoPlayer.currentTime -= 5;
+                }
+                
+                if (event.code === 'ArrowUp') {
+                    videoPlayer.volume = Math.min(1, videoPlayer.volume + 0.1);
+                    updateVolumeDisplay();
+                }
+                
+                if (event.code === 'ArrowDown') {
+                    videoPlayer.volume = Math.max(0, videoPlayer.volume - 0.1);
+                    updateVolumeDisplay();
+                }
+                
+                if (event.code === 'KeyM') {
+                    toggleMute();
+                }
+                
+                if (event.code === 'KeyF') {
+                    toggleFullscreen();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

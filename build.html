@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build Recommendation - THE TWIN GAMEDEV</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f43f5e;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8fafc;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .btn-back {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            margin: 1rem 0 2rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        nav a {
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        nav a:hover, nav a.active {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem 3rem;
+        }
+
+        .page-title {
+            text-align: center;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .page-title:after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            margin: 0.5rem auto;
+            border-radius: 2px;
+        }
+
+        .build-section {
+            margin-bottom: 3rem;
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .build-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .build-icon {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .build-team {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .character {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .character-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .character-name {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        .character-role {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .build-details {
+            margin-top: 1.5rem;
+        }
+
+        .detail-item {
+            margin-bottom: 1rem;
+        }
+
+        .detail-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .detail-title i {
+            color: var(--secondary);
+        }
+
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--gray-light);
+            transform: translateY(-5px);
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav a {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .build-team {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-tools"></i>
+                <h1>BUILD RECOMMENDATION</h1>
+            </div>
+            <nav>
+                <a href="index.html">Beranda</a>
+                <a href="rekomendasi.html">Rekomendasi</a>
+                <a href="character.html">Character</a>
+                <a href="build.html" class="active">Build</a>
+                <a href="about.html">About</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <a href="index.html" class="btn-back">
+            <i class="fas fa-arrow-left"></i> Kembali ke Beranda
+        </a>
+
+        <div class="page-title">
+            <h2>Rekomendasi Build Karakter</h2>
+            <p>Tim terbaik untuk berbagai konten game</p>
+        </div>
+
+        <section class="build-section">
+            <div class="build-header">
+                <i class="fas fa-fire build-icon"></i>
+                <h3>National Team (Genshin Impact)</h3>
+            </div>
+            
+            <div class="build-team">
+                <div class="character">
+                    <img src="https://d1tgyzt3mf06m9.cloudfront.net/v3-staging/2024/04/alasan-xiangling-genshin-impact-cover.png" alt="Xiangling" class="character-image">
+                    <div class="character-name">Xiangling</div>
+                    <div class="character-role">Pyro DPS</div>
+                </div>
+                <div class="character">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFtYp5302XHHvu-B5U43CFQVhC0_7OYXMkug&s" alt="Xingqiu" class="character-image">
+                    <div class="character-name">Xingqiu</div>
+                    <div class="character-role">Hydro Support</div>
+                </div>
+                <div class="character">
+                    <img src="https://assetsio.gnwcdn.com/genshin-impact-bennett.jpg?width=1600&height=900&fit=crop&quality=100&format=png&enable=upscale&auto=webp" alt="Bennett" class="character-image">
+                    <div class="character-name">Bennett</div>
+                    <div class="character-role">Healer/Buffer</div>
+                </div>
+                <div class="character">
+                    <img src="https://blog.rrqtopup.com/wp-content/uploads/2025/04/Sucrose_Birthday_2022-1000x768.webp" alt="Sucrose" class="character-image">
+                    <div class="character-name">Sucrose</div>
+                    <div class="character-role">Anemo Support</div>
+                </div>
+            </div>
+            
+            <div class="build-details">
+                <div class="detail-item">
+                    <div class="detail-title"><i class="fas fa-info-circle"></i> Deskripsi Team</div>
+                    <p>Tim serbaguna dengan kombo Vaporize yang konsisten. Cocok untuk hampir semua konten.</p>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-title"><i class="fas fa-cogs"></i> Mekanik Team</div>
+                    <p>1. Xingqiu Q → Bennett Q → Xiangling Q → Sucrose Q → Xiangling dps</p>
+                    <p>2. Lakukan rotation secara konsisten untuk memaksimalkan reaksi Vaporize</p>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-title"><i class="fas fa-star"></i> Keunggulan</div>
+                    <p>• Damage tinggi dan konsisten</p>
+                    <p>• Bisa digunakan untuk single target dan AOE</p>
+                    <p>• Hampir semua karakter bisa didapatkan secara gratis</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="build-section">
+            <div class="build-header">
+                <i class="fas fa-meteor build-icon"></i>
+                <h3>DoT Team (Honkai Star Rail)</h3>
+            </div>
+            
+            <div class="build-team">
+                <div class="character">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1RLED057oWyz2InMN5HbPW58gANSRb8pFwg&s" alt="Kafka" class="character-image">
+                    <div class="character-name">Kafka</div>
+                    <div class="character-role">Lightning DPS</div>
+                </div>
+                <div class="character">
+                    <img src="https://i0.wp.com/www.gimbot.com/wp-content/uploads/2023/08/build-sampo-honkai-star-rail.jpg?resize=800%2C451&ssl=1" alt="Sampo" class="character-image">
+                    <div class="character-name">Sampo</div>
+                    <div class="character-role">Wind DoT</div>
+                </div>
+                <div class="character">
+                    <img src="https://blog.rrqtopup.com/wp-content/uploads/2025/08/White_Day_2024_Luka-1000x768.webp" alt="Luka" class="character-image">
+                    <div class="character-name">Luka</div>
+                    <div class="character-role">Physical DoT</div>
+                </div>
+                <div class="character">
+                    <img src="https://blog.rrqtopup.com/wp-content/uploads/2025/04/White_Day_2024_Luocha-1000x768.jpg" alt="Luocha" class="character-image">
+                    <div class="character-name">Luocha</div>
+                    <div class="character-role">Healer</div>
+                </div>
+            </div>
+            
+            <div class="build-details">
+                <div class="detail-item">
+                    <div class="detail-title"><i class="fas fa-info-circle"></i> Deskripsi Team</div>
+                    <p>Tim berbasis Damage-over-Time yang sangat kuat dengan Kafka sebagai trigger.</p>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-title"><i class="fas fa-cogs"></i> Mekanik Team</div>
+                    <p>1. Trigger DoT dengan Kafka skill dan ultimate</p>
+                    <p>2. Gunakan DoT dari Sampo dan Luka untuk damage tambahan</p>
+                    <p>3. Kafka akan secara otomatis memicu semua DoT</p>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="detail-title"><i class="fas fa-star"></i> Keunggulan</div>
+                    <p>• Damage yang sangat tinggi saat melawan boss</p>
+                    <p>• Bisa digunakan dalam mode auto-battle</p>
+                    <p>• Fleksibel terhadap berbagai musuh</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="header-container">
+            <p>&copy; 2025 THE TWIN GAMEDEV. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+                <a href="#"><i class="fab fa-discord"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Back to top button behavior
+        window.addEventListener('scroll', function() {
+            const btn = document.querySelector('.btn-back');
+            if (window.scrollY > 300) {
+                btn.style.position = 'fixed';
+                btn.style.bottom = '20px';
+                btn.style.right = '20px';
+                btn.style.zIndex = '99';
+            } else {
+                btn.style.position = 'relative';
+                btn.style.bottom = 'auto';
+                btn.style.right = 'auto';
+            }
+        });
+
+        // Current year for footer
+        document.querySelector('footer p').innerHTML = `&copy; ${new Date().getFullYear()} THE TWIN GAMEDEV. All rights reserved.`;
+    </script>
+</body>
+</html>

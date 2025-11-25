@@ -1,0 +1,1496 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>THE TWIN GAMEDEV - Review Game Hoyoverse</title>
+  <meta name="description" content="Review lengkap game-game terbaik dari Hoyoverse seperti Genshin Impact, Honkai Impact 3rd, dan Honkai Star Rail">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+/* === DARK MODE VARIABLES === */
+:root {
+    --primary: #6366f1;
+    --primary-dark: #4f46e5;
+    --secondary: #f43f5e;
+    --dark: #1e293b;
+    --light: #f8fafc;
+    --gray: #64748b;
+    --gray-light: #e2e8f0;
+    --card-bg: #ffffff;
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+.dark-mode {
+    --primary: #818cf8;
+    --primary-dark: #6366f1;
+    --secondary: #fb7185;
+    --dark: #f8fafc;
+    --light: #1e293b;
+    --gray: #cbd5e1;
+    --card-bg: #334155;
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* === TOP NAVIGATION STYLES === */
+.top-nav {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--gray-light);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: var(--transition);
+}
+
+.dark-mode .top-nav {
+    background: rgba(30, 41, 59, 0.95);
+    border-bottom: 1px solid var(--gray);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Search Bar */
+.search-container {
+    flex: 1;
+    max-width: 400px;
+    position: relative;
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.8rem 1.5rem 0.8rem 3rem;
+    border: 2px solid var(--gray-light);
+    border-radius: 25px;
+    font-size: 1rem;
+    transition: var(--transition);
+    background: var(--light);
+    color: var(--dark);
+}
+
+.dark-mode .search-input {
+    background: var(--card-bg);
+    border-color: var(--gray);
+    color: var(--light);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gray);
+}
+
+/* User Controls */
+.user-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.control-btn {
+    background: none;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--dark);
+    position: relative;
+}
+
+.dark-mode .control-btn {
+    color: var(--light);
+}
+
+.control-btn:hover {
+    background: var(--gray-light);
+}
+
+.dark-mode .control-btn:hover {
+    background: var(--gray);
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--secondary);
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Auth Buttons */
+.auth-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.auth-btn {
+    padding: 0.6rem 1.2rem;
+    border: 2px solid var(--primary);
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.login-btn {
+    background: transparent;
+    color: var(--primary);
+}
+
+.login-btn:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.signup-btn {
+    background: var(--primary);
+    color: white;
+}
+
+.signup-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+/* === NOTIFICATION PANEL === */
+.notification-panel {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 350px;
+    background: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: var(--card-shadow);
+    z-index: 999;
+    transform: translateX(400px);
+    transition: var(--transition);
+    border: 1px solid var(--gray-light);
+}
+
+.dark-mode .notification-panel {
+    background: var(--dark);
+    border-color: var(--gray);
+}
+
+.notification-panel.show {
+    transform: translateX(0);
+}
+
+.notification-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--gray-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dark-mode .notification-header {
+    border-color: var(--gray);
+}
+
+.notification-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--dark);
+}
+
+.dark-mode .notification-title {
+    color: var(--light);
+}
+
+.notification-clear {
+    color: var(--primary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.notification-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.notification-item {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--gray-light);
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.dark-mode .notification-item {
+    border-color: var(--gray);
+}
+
+.notification-item:hover {
+    background: var(--gray-light);
+}
+
+.dark-mode .notification-item:hover {
+    background: var(--gray);
+}
+
+.notification-item.unread {
+    background: rgba(99, 102, 241, 0.1);
+}
+
+.notification-text {
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+    color: var(--dark);
+}
+
+.dark-mode .notification-text {
+    color: var(--light);
+}
+
+.notification-time {
+    font-size: 0.8rem;
+    color: var(--gray);
+}
+
+/* === MODAL STYLES === */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 2.5rem;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.dark-mode .modal-content {
+    background: var(--dark);
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--gray);
+}
+
+.modal-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: var(--primary);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.dark-mode .form-label {
+    color: var(--light);
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.8rem 1.2rem;
+    border: 2px solid var(--gray-light);
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: var(--transition);
+    background: var(--light);
+    color: var(--dark);
+}
+
+.dark-mode .form-input {
+    background: var(--gray);
+    border-color: var(--gray);
+    color: var(--light);
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.form-submit {
+    width: 100%;
+    padding: 1rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.form-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+}
+
+.form-footer {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--gray);
+}
+
+.form-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 768px) {
+    .nav-container {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .search-container {
+        max-width: 100%;
+    }
+    
+    .notification-panel {
+        width: 300px;
+        right: 10px;
+    }
+    
+    .auth-buttons {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .notification-panel {
+        width: 280px;
+        right: 5px;
+    }
+    
+    .auth-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+    /* === CSS Variables === */
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --secondary: #f43f5e;
+      --dark: #1e293b;
+      --dark-light: #334155;
+      --light: #f8fafc;
+      --gray: #64748b;
+      --gray-light: #e2e8f0;
+      --success: #10b981;
+      --warning: #f97316;
+      --radius: 0.5rem;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    /* === Base Styles === */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f1f5f9;
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    /* === Typography === */
+    h1, h2, h3, h4 {
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 2rem; }
+    h3 { font-size: 1.75rem; }
+    h4 { font-size: 1.5rem; }
+
+    p {
+      margin-bottom: 1rem;
+    }
+
+    /* === Header Styles === */
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 1.5rem 0;
+      text-align: center;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      /* background: url('https://placehold.co/1920x1080') center/cover; */
+      opacity: 0.1;
+      z-index: 0;
+    }
+
+    header > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    
+    .logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .logo-icon {
+      font-size: 2rem;
+    }
+
+    /* === Navigation === */
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding: 0.5rem;
+    }
+
+    nav a {
+      color: white;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      transition: all 0.3s ease;
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    nav a:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    nav a.active {
+      background-color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* === Main Content === */
+    .container {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      color: var(--gray);
+    }
+
+    .author-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--primary);
+    }
+
+    /* === Game Cards === */
+    .game-card {
+      background-color: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .game-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .game-image-container {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-rating {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .game-image {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .game-card:hover .game-image {
+      transform: scale(1.05);
+    }
+
+    .game-content {
+      padding: 1.5rem;
+    }
+
+    .game-title {
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .game-title .game-icon {
+      font-size: 1.5rem;
+    }
+
+    .game-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+
+    .game-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .game-description {
+      color: var(--dark-light);
+      margin-bottom: 1rem;
+    }
+
+    .features-title {
+      font-weight: 600;
+      margin: 1.5rem 0 0.5rem;
+      color: var(--primary);
+    }
+
+    .features-list {
+      padding-left: 1.5rem;
+    }
+
+    .features-list li {
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+
+    .features-list li::before {
+      content: "✓";
+      color: var(--success);
+      position: absolute;
+      left: -1.25rem;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+      margin-top: 1rem;
+    }
+
+    .btn:hover {
+      background-color: var(--primary-dark);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    /* === Comments Section === */
+    .comments-section {
+      margin-top: 3rem;
+      padding: 2rem;
+      background-color: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .comments-title {
+      font-size: 1.5rem;
+      color: var(--dark);
+    }
+
+    .comment-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .form-control {
+      padding: 0.75rem;
+      border: 1px solid var(--gray-light);
+      border-radius: var(--radius);
+      font-family: inherit;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    textarea.form-control {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .comments-list {
+      margin-top: 2rem;
+    }
+
+    .comment {
+      background-color: #f8fafc;
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+    }
+
+    .comment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .comment-author {
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+
+    .comment-date {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+
+    .comment-text {
+      color: var(--dark-light);
+      line-height: 1.5;
+    }
+
+    /* === Footer === */
+    footer {
+      background-color: var(--dark);
+      color: white;
+      text-align: center;
+      padding: 3rem 0;
+      margin-top: 3rem;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .footer-logo {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-link {
+      transition: color 0.3s ease;
+    }
+
+    .footer-link:hover {
+      color: var(--gray-light);
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .social-link {
+      font-size: 1.5rem;
+      color: white;
+      transition: transform 0.3s ease;
+    }
+
+    .social-link:hover {
+      transform: translateY(-3px);
+      color: var(--gray-light);
+    }
+
+    .copyright {
+      font-size: 0.9rem;
+      color: var(--gray-light);
+    }
+
+    /* === Back to Top Button === */
+    #backToTop {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background-color: var(--primary);
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+
+    #backToTop.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    #backToTop:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    /* === Responsive Design === */
+    @media (max-width: 768px) {
+      h1 { font-size: 2rem; }
+      h2 { font-size: 1.75rem; }
+      
+      .game-image {
+        height: 200px;
+      }
+      
+      nav {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      nav a {
+        width: 100%;
+        text-align: center;
+      }
+
+      .post-meta {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .game-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .comment-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+
+      .comment-date {
+        margin-bottom: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation Bar -->
+<div class="top-nav">
+  <div class="nav-container">
+      <div class="search-container">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" class="search-input" placeholder="Cari game, karakter, atau guide...">
+      </div>
+      
+      <div class="user-controls">
+          <button class="control-btn theme-toggle" onclick="toggleTheme()">
+              <i class="fas fa-moon"></i>
+          </button>
+          
+          <button class="control-btn notification-btn" onclick="toggleNotifications()">
+              <i class="fas fa-bell"></i>
+              <span class="notification-badge">3</span>
+          </button>
+          
+          <div class="auth-buttons">
+              <button class="auth-btn login-btn" onclick="openModal('login')">Login</button>
+              <button class="auth-btn signup-btn" onclick="openModal('signup')">Sign Up</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- Notification Panel -->
+<div class="notification-panel" id="notificationPanel">
+  <div class="notification-header">
+      <h3 class="notification-title">Notifikasi</h3>
+      <button class="notification-clear" onclick="clearNotifications()">Bersihkan</button>
+  </div>
+  <div class="notification-list">
+      <div class="notification-item unread">
+          <div class="notification-text">🎮 Event baru telah dimulai! Dapatkan reward eksklusif sekarang.</div>
+          <div class="notification-time">2 jam yang lalu</div>
+      </div>
+      <div class="notification-item unread">
+          <div class="notification-text">⭐ Karakter baru telah dirilis! Lihat detailnya di halaman Character.</div>
+          <div class="notification-time">1 hari yang lalu</div>
+      </div>
+      <div class="notification-item">
+          <div class="notification-text">🔄 Update game versi 4.5 sudah tersedia untuk di-download.</div>
+          <div class="notification-time">3 hari yang lalu</div>
+      </div>
+      <div class="notification-item">
+          <div class="notification-text">🔧 Maintenance server akan dilakukan besok pukul 02:00-06:00.</div>
+          <div class="notification-time">5 hari yang lalu</div>
+      </div>
+  </div>
+</div>
+
+<!-- Login Modal -->
+<div class="modal" id="loginModal">
+  <div class="modal-content">
+      <button class="close-modal" onclick="closeModal('login')">
+          <i class="fas fa-times"></i>
+      </button>
+      <h2 class="modal-title">Login</h2>
+      <form>
+          <div class="form-group">
+              <label class="form-label">Email atau Username</label>
+              <input type="text" class="form-input" placeholder="Masukkan email atau username" required>
+          </div>
+          <div class="form-group">
+              <label class="form-label">Password</label>
+              <input type="password" class="form-input" placeholder="Masukkan password" required>
+          </div>
+          <button type="submit" class="form-submit">Login</button>
+          <div class="form-footer">
+              Belum punya akun? <span class="form-link" onclick="switchModal('login', 'signup')">Daftar sekarang</span>
+          </div>
+      </form>
+  </div>
+</div>
+
+<!-- Signup Modal -->
+<div class="modal" id="signupModal">
+  <div class="modal-content">
+      <button class="close-modal" onclick="closeModal('signup')">
+          <i class="fas fa-times"></i>
+      </button>
+      <h2 class="modal-title">Daftar Akun</h2>
+      <form>
+          <div class="form-group">
+              <label class="form-label">Username</label>
+              <input type="text" class="form-input" placeholder="Pilih username" required>
+          </div>
+          <div class="form-group">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-input" placeholder="Masukkan email" required>
+          </div>
+          <div class="form-group">
+              <label class="form-label">Password</label>
+              <input type="password" class="form-input" placeholder="Buat password" required>
+          </div>
+          <div class="form-group">
+              <label class="form-label">Konfirmasi Password</label>
+              <input type="password" class="form-input" placeholder="Ulangi password" required>
+          </div>
+          <button type="submit" class="form-submit">Daftar</button>
+          <div class="form-footer">
+              Sudah punya akun? <span class="form-link" onclick="switchModal('signup', 'login')">Login sekarang</span>
+          </div>
+      </form>
+  </div>
+</div>
+  <!-- Header Section -->
+  <header>
+    <div class="logo">
+      <i class="fas fa-gamepad logo-icon"></i>
+      <h1>THE TWIN GAMEDEV</h1>
+    </div>
+    <nav>
+      <a href="Rekomendasi.html" class="active">Rekomendasi</a>
+      <a href="character.html">Character</a>
+      <a href="build.html">Build Recommendation</a>
+      <a href="gameplay.html">Gameplay</a>
+      <a href="about.html">About</a>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container">
+    <!-- Post Meta -->
+    <div class="post-meta">
+      <img src="https://cdn.dribbble.com/userupload/21239446/file/original-c4d231c65aa95453bc7ae3414ed4cf56.jpg?resize=752x&vertical=center" alt="Foto profil The Twin" class="author-avatar">
+      <div>
+        <p>Diposting oleh <strong>The Twin</strong></p>
+        <p><i class="far fa-calendar-alt"></i> 25 November 2025</p>
+      </div>
+    </div>
+
+    <!-- Page Title -->
+    <h2>Beberapa Rekomendasi Game Hoyoverse Populer di Android</h2>
+
+    <!-- Game 1: Honkai Impact 3rd -->
+    <article class="game-card">
+      <div class="game-image-container">
+        <span class="game-rating">
+          <i class="fas fa-star"></i> 4.8/5
+        </span>
+        <img src="https://cdn2.unrealengine.com/1920-1080blog-post-featured-image-1920x1080-51e4961e7eeb.png" 
+             alt="Cover Honkai Impact 3rd menunjukkan karakter Valkyrie dalam aksi melawan musuh" 
+             class="game-image">
+      </div>
+      <div class="game-content">
+        <h3 class="game-title">
+          <i class="fas fa-rocket game-icon"></i>
+          1. Honkai Impact 3rd
+        </h3>
+        <div class="game-meta">
+          <span class="game-meta-item"><i class="fas fa-gamepad"></i> Action RPG</span>
+          <span class="game-meta-item"><i class="fas fa-users"></i> Multiplayer</span>
+          <span class="game-meta-item"><i class="fas fa-download"></i> 3.5GB</span>
+        </div>
+        <p class="game-description">
+          Honkai Impact 3rd adalah game action RPG 3D yang dikembangkan oleh miHoYo, menggabungkan berbagai elemen gameplay seperti hack-and-slash dan bullet hell.
+        </p>
+        <p class="game-description">
+          Dalam permainan ini, pemain mengendalikan Valkyries yang berjuang melawan ancaman Honkai di dunia yang terkorupsi. Dengan grafis memukau dan sistem pertarungan yang intens, game ini menawarkan pengalaman bermain yang seru.
+        </p>
+        
+        <h4 class="features-title">Alasan Bermain:</h4>
+        <ul class="features-list">
+          <li>Grafis anime 3D berkualitas tinggi dengan efek partikel memukau</li>
+          <li>Sistem pertarungan hack and slash yang mendalam dengan berbagai kombinasi skill</li>
+          <li>Cerita dan karakter yang kompleks dengan pengembangan yang matang</li>
+          <li>Update konten berkala dengan event dan karakter baru</li>
+        </ul>
+        
+        <button class="btn" onclick="showMore('honkai')">
+          <i class="fas fa-book-open"></i> Baca Selengkapnya
+        </button>
+        
+        <div id="honkai-more" style="display: none;">
+          <p><strong>Detail Tambahan:</strong></p>
+          <p>Honkai Impact 3rd pertama kali dirilis pada tahun 2016 dan telah mengalami banyak pembaruan signifikan. Game ini menampilkan:</p>
+          <ul class="features-list">
+            <li>Mode cerita episodik dengan cinematic berkualitas tinggi</li>
+            <li>Mode multiplayer co-op untuk bermain dengan teman</li>
+            <li>Sistem gacha untuk mendapatkan karakter dan senjata baru</li>
+            <li>Event terbatas dengan hadiah eksklusif</li>
+          </ul>
+          <p>Game ini cocok untuk pemain yang menyukai aksi cepat dengan elemen strategi dalam membangun tim karakter.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Game 2: Genshin Impact -->
+    <article class="game-card">
+      <div class="game-image-container">
+        <span class="game-rating">
+          <i class="fas fa-star"></i> 4.9/5
+        </span>
+        <img src="genshin.jpeg" 
+             alt="Pemandangan open world Genshin Impact dengan karakter utama di depan danau" 
+             class="game-image">
+      </div>
+      <div class="game-content">
+        <h3 class="game-title">
+          <i class="fas fa-globe game-icon"></i>
+          2. Genshin Impact
+        </h3>
+        <div class="game-meta">
+          <span class="game-meta-item"><i class="fas fa-mountain"></i> Open World</span>
+          <span class="game-meta-item"><i class="fas fa-magic"></i> Elemental Combat</span>
+          <span class="game-meta-item"><i class="fas fa-download"></i> 8GB+</span>
+        </div>
+        <p class="game-description">
+          Genshin Impact adalah game RPG open-world yang dikembangkan oleh miHoYo, di mana pemain menjelajahi dunia fantasi Teyvat. Game ini menawarkan grafis yang memukau, sistem pertarungan berbasis elemen, dan karakter yang dapat dipilih untuk menciptakan pengalaman bermain yang mendalam.
+        </p>
+        <p class="game-description">
+          Pemain dapat melakukan berbagai aktivitas seperti memanjat, berenang, terbang, dan memasak, yang menambah kedalaman gameplay dan eksplorasi dunia.
+        </p>
+        
+        <h4 class="features-title">Alasan Bermain:</h4>
+        <ul class="features-list">
+          <li>Dunia terbuka yang luas dan penuh dengan rahasia untuk ditemukan</li>
+          <li>Sistem pertarungan elemen yang unik dengan kombinasi yang kompleks</li>
+          <li>Lebih dari 40 karakter yang bisa dikoleksi dengan gameplay unik masing-masing</li>
+          <li>Musik orkestra original yang memukau untuk setiap wilayah</li>
+        </ul>
+        
+        <button class="btn" onclick="showMore('genshin')">
+          <i class="fas fa-book-open"></i> Baca Selengkapnya
+        </button>
+        
+        <div id="genshin-more" style="display: none;">
+          <p><strong>Detail Tambahan:</strong></p>
+          <p>Genshin Impact telah menjadi fenomena global sejak rilis tahun 2020. Fitur unggulan:</p>
+          <ul class="features-list">
+            <li>Tujuh negara dengan budaya dan tema elemen berbeda</li>
+            <li>Sistem gacha yang adil dengan jaminan mendapatkan karakter 5-star</li>
+            <li>Event musiman dengan cerita dan hadiah eksklusif</li>
+            <li>Mode co-op untuk bermain bersama teman hingga 4 pemain</li>
+          </ul>
+          <p>Game ini terus diperbarui setiap 6 minggu dengan konten baru, membuatnya selalu segar untuk dimainkan.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Game 3: Honkai Star Rail -->
+    <article class="game-card">
+      <div class="game-image-container">
+        <span class="game-rating">
+          <i class="fas fa-star"></i> 4.7/5
+        </span>
+        <img src="https://i0.wp.com/www.gimbot.com/wp-content/uploads/2023/04/Epic_Banner_EN_2560x1440_2560x1440-b6320f7524dbf3d52fe189aef5bd2cfb.jpg?fit=1200%2C675&ssl=1" 
+             alt="Karakter utama Honkai Star Rail berdiri di dalam kereta luar angkasa Astral Express" 
+             class="game-image">
+      </div>
+      <div class="game-content">
+        <h3 class="game-title">
+          <i class="fas fa-train game-icon"></i>
+          3. Honkai Star Rail
+        </h3>
+        <div class="game-meta">
+          <span class="game-meta-item"><i class="fas fa-chess-board"></i> Turn-based</span>
+          <span class="game-meta-item"><i class="fas fa-space-shuttle"></i> Sci-Fi</span>
+          <span class="game-meta-item"><i class="fas fa-download"></i> 5GB</span>
+        </div>
+        <p class="game-description">
+          Honkai: Star Rail adalah game RPG turn-based yang dikembangkan oleh HoYoverse, menggabungkan elemen dari seri Honkai dan Genshin Impact. Pemain berperan sebagai Trailblazer yang menjelajahi berbagai planet melalui Astral Express, menghadapi tantangan dan mengumpulkan karakter dengan kemampuan unik dalam pertempuran strategis.
+        </p>
+        <p class="game-description">
+          Dengan cerita yang lebih gelap dari Genshin Impact tetapi tetap menyisipkan humor, game ini menawarkan pengalaman yang unik bagi penggemar RPG.
+        </p>
+        
+        <h4 class="features-title">Alasan Bermain:</h4>
+        <ul class="features-list">
+          <li>Sistem pertarungan turn-based strategis dengan mekanik unik</li>
+          <li>Dunia sci-fi yang kaya dengan berbagai planet berbeda</li>
+          <li>Karakter dengan kepribadian unik dan desain yang memukau</li>
+          <li>Kualitas visual setara konsol dengan optimasi untuk mobile</li>
+        </ul>
+        
+        <button class="btn" onclick="showMore('starrail')">
+          <i class="fas fa-book-open"></i> Baca Selengkapnya
+        </button>
+        
+        <div id="starrail-more" style="display: none;">
+          <p><strong>Detail Tambahan:</strong></p>
+          <p>Honkai Star Rail membawa pendekatan berbeda dari game HoYoverse lainnya dengan:</p>
+          <ul class="features-list">
+            <li>Mode auto-battle untuk pertempuran biasa</li>
+            <li>Sistem Path (role karakter) yang menentukan gaya bermain</li>
+            <li>Simulasi Universe dengan roguelike elements</li>
+            <li>Referensi budaya pop dan humor yang menghibur</li>
+          </ul>
+          <p>Game ini cocok untuk pemain yang ingin pengalaman RPG strategis yang lebih santai tetapi tetap menantang.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Conclusion Section -->
+    <section class="comments-section" style="margin-top: 2rem;">
+      <h3 class="comments-title"><i class="fas fa-pen"></i> Kesimpulan</h3>
+      <p>
+        Itulah beberapa rekomendasi game populer Hoyoverse yang bisa Anda mainkan di perangkat Android. Ketiga game ini menawarkan pengalaman yang berbeda-beda namun sama-sama berkualitas tinggi dalam hal grafis, gameplay, dan penceritaan.
+      </p>
+      <p style="margin-top: 1rem;">
+        Dari ketiganya, mana yang paling menarik bagi Anda? Atau mungkin Anda memiliki rekomendasi game Hoyoverse lainnya yang patut dicoba? Bagikan pendapat Anda di kolom komentar di bawah!
+      </p>
+    </section>
+
+    <!-- Comments Section -->
+    <section class="comments-section">
+      <h3 class="comments-title"><i class="fas fa-comments"></i> Komentar (1)</h3>
+      
+      <!-- Existing Comment -->
+      <div class="comments-list">
+        <div class="comment">
+          <div class="comment-header">
+            <span class="comment-author">Gamer Indo</span>
+            <span class="comment-date"><i class="far fa-clock"></i> 15 April 2025, 14:30</span>
+          </div>
+          <p class="comment-text">
+            Gw udah main ketiganya dan menurut gw Honkai Star Rail paling enak buat dimainin sambil santai. Auto-battle nya memudahkan kalau lagi sibuk. Salut buat reviewnya yang detail!
+          </p>
+        </div>
+      </div>
+      
+      <!-- Comment Form -->
+      <form class="comment-form" onsubmit="addComment(event)">
+        <div class="form-group">
+          <label for="name" class="form-label">Nama</label>
+          <input type="text" id="name" class="form-control" placeholder="Nama Anda" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" id="email" class="form-control" placeholder="Email Anda (tidak akan dipublikasikan)" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="comment" class="form-label">Komentar</label>
+          <textarea id="comment" class="form-control" rows="4" placeholder="Tulis komentar Anda di sini..." required></textarea>
+        </div>
+        
+        <button type="submit" class="btn">
+          <i class="fas fa-paper-plane"></i> Kirim Komentar
+        </button>
+      </form>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-logo">
+        <i class="fas fa-gamepad"></i> THE TWIN GAMEDEV
+      </div>
+      
+      <div class="footer-links">
+        <a href="about.html" class="footer-link">Tentang Kami</a>
+        <a href="privacy.html" class="footer-link">Kebijakan Privasi</a>
+        <a href="terms.html" class="footer-link">Syarat & Ketentuan</a>
+        <a href="contact.html" class="footer-link">Kontak</a>
+      </div>
+      
+      <div class="social-links">
+        <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+      </div>
+      
+      <p class="copyright">
+        &copy; 2025 THE TWIN GAMEDEV. Semua hak dilindungi.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <div id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // Toggle read more sections
+    function showMore(game) {
+      const moreContent = document.getElementById(`${game}-more`);
+      const button = document.querySelector(`button[onclick="showMore('${game}')"]`);
+      const icon = button.querySelector('i');
+      
+      if (moreContent.style.display === 'none' || !moreContent.style.display) {
+        moreContent.style.display = 'block';
+        button.innerHTML = '<i class="fas fa-times"></i> Tutup';
+      } else {
+        moreContent.style.display = 'none';
+        button.innerHTML = '<i class="fas fa-book-open"></i> Baca Selengkapnya';
+      }
+    }
+
+    // Comment system
+    function addComment(event) {
+      event.preventDefault();
+      
+      const name = document.getElementById('name').value;
+      const commentText = document.getElementById('comment').value;
+      
+      if (!name || !commentText) {
+        alert('Harap isi nama dan komentar Anda!');
+        return;
+      }
+      
+      const date = new Date();
+      const formattedDate = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}, ${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`;
+      
+      const commentHTML = `
+        <div class="comment">
+          <div class="comment-header">
+            <span class="comment-author">${name}</span>
+            <span class="comment-date"><i class="far fa-clock"></i> ${formattedDate}</span>
+          </div>
+          <p class="comment-text">${commentText}</p>
+        </div>
+      `;
+      
+      document.querySelector('.comments-list').insertAdjacentHTML('afterbegin', commentHTML);
+      
+      // Reset form
+      event.target.reset();
+      
+      // Show success message
+      alert('Komentar berhasil ditambahkan!');
+    }
+
+    // Back to top button
+    window.addEventListener('scroll', function() {
+      const backToTopButton = document.getElementById('backToTop');
+      if (window.pageYOffset > 300) {
+        backToTopButton.classList.add('active');
+      } else {
+        backToTopButton.classList.remove('active');
+      }
+    });
+
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+
+    // Set current year in footer
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('backToTop').addEventListener('click', scrollToTop);
+      
+      // Set current year in footer
+      const yearElement = document.querySelector('.copyright');
+      if (yearElement) {
+        const currentYear = new Date().getFullYear();
+        yearElement.textContent = yearElement.textContent.replace('2025', currentYear);
+      }
+      
+      // Initialize read more sections as hidden
+      ['honkai', 'genshin', 'starrail'].forEach(game => {
+        const content = document.getElementById(`${game}-more`);
+        if (content) {
+          content.style.display = 'none';
+        }
+      });
+    });
+
+    // Mobile menu toggle (future implementation)
+    function toggleMobileMenu() {
+      const nav = document.querySelector('nav');
+      nav.classList.toggle('mobile-active');
+    }
+// ===== DARK MODE FUNCTIONALITY =====
+function toggleTheme() {
+    document.body.classList.toggle('dark-mode');
+    const themeIcon = document.querySelector('.theme-toggle i');
+    
+    if (document.body.classList.contains('dark-mode')) {
+        themeIcon.className = 'fas fa-sun';
+        localStorage.setItem('theme', 'dark');
+    } else {
+        themeIcon.className = 'fas fa-moon';
+        localStorage.setItem('theme', 'light');
+    }
+}
+
+// ===== NOTIFICATION FUNCTIONALITY =====
+function toggleNotifications() {
+    const panel = document.getElementById('notificationPanel');
+    panel.classList.toggle('show');
+}
+
+function clearNotifications() {
+    const notifications = document.querySelectorAll('.notification-item');
+    notifications.forEach(notification => {
+        notification.classList.remove('unread');
+    });
+    document.querySelector('.notification-badge').textContent = '0';
+}
+
+// ===== MODAL FUNCTIONALITY =====
+function openModal(type) {
+    document.getElementById(type + 'Modal').classList.add('show');
+}
+
+function closeModal(type) {
+    document.getElementById(type + 'Modal').classList.remove('show');
+}
+
+function switchModal(from, to) {
+    closeModal(from);
+    setTimeout(() => openModal(to), 300);
+}
+
+// ===== SEARCH FUNCTIONALITY =====
+const searchInput = document.querySelector('.search-input');
+searchInput.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        const query = this.value.trim();
+        if (query) {
+            alert('Mencari: ' + query);
+            this.value = '';
+            // Di implementasi nyata, ini akan melakukan pencarian
+        }
+    }
+});
+
+// ===== INITIALIZATION =====
+document.addEventListener('DOMContentLoaded', function() {
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-mode');
+        document.querySelector('.theme-toggle i').className = 'fas fa-sun';
+    }
+
+    // Close modals when clicking outside
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', function(event) {
+            if (event.target === this) {
+                this.classList.remove('show');
+            }
+        });
+    });
+
+    // Close notifications when clicking outside
+    document.addEventListener('click', function(event) {
+        const panel = document.getElementById('notificationPanel');
+        const notifBtn = document.querySelector('.notification-btn');
+        
+        if (panel.classList.contains('show') && 
+            !panel.contains(event.target) && 
+            !notifBtn.contains(event.target)) {
+            panel.classList.remove('show');
+        }
+    });
+});
+  </script>
+</body>
+</html>
